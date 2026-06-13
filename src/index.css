@@ -196,11 +196,19 @@ dialog.sketch-modal {
     background-color: #ffffff;
     max-width: 520px;
     width: calc(100% - 30px);
+    max-height: 90vh;
+    /* جلوگیری از بزرگتر شدن مودال از ۹۰٪ ارتفاع کل صفحه */
+    max-height: 90dvh;
+    /* هماهنگی با نوار ابزار متغیر مرورگرهای موبایل */
     padding: 30px;
     box-sizing: border-box;
     margin: auto;
-    overflow: visible;
-    /* پیشگیری از مخدوش شدن سایه‌ها */
+    overflow: hidden;
+    /* جلوگیری از اسکرول زشت و کلی در مودال‌های کوتاه */
+
+    /* استفاده از Flexbox برای چیدمان داخلی عمودی و منعطف */
+    display: none;
+    flex-direction: column;
 }
 
 /* افکت تیره پشت مودال بومی */
@@ -209,7 +217,10 @@ dialog.sketch-modal::backdrop {
     backdrop-filter: blur(2px);
 }
 
+
 dialog.sketch-modal[open] {
+    display: flex;
+    /* تغییر از بلاک به فلکس برای مدیریت فضا */
     animation: bounceIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -347,18 +358,18 @@ dialog.sketch-modal[open]::backdrop {
     font-size: 1.05rem !important;
 }
 
-.signature a {
-    margin-top: 25px;
-    cursor: pointer;
-    text-decoration: none
-}
-
-/* جدول امتیازات */
+/* ظرف اصلی لیدربرد */
 .leaderboard-container {
     width: 100%;
     margin: 15px 0;
     text-align: right;
     direction: rtl;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* اشغال فضای باقی‌مانده مودال به طور دینامیک */
+    min-height: 0;
+    /* الزامی برای کارکرد درست سرریز فرزندان در حالت فلکس */
 }
 
 .leaderboard-header {
@@ -369,13 +380,21 @@ dialog.sketch-modal[open]::backdrop {
     color: #7d7571;
     border-bottom: 2px dashed #2b2625;
     font-size: 1.15rem;
+    flex-shrink: 0;
+    /* هدر نباید فشرده یا کوچک شود */
 }
 
+/* اسکرول اختصاصی فقط روی لیست رتبه‌ها */
 .leaderboard-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-top: 10px;
+    overflow-y: auto;
+    /* فعال‌سازی اسکرول فقط در صورت طولانی بودن لیست */
+    padding-left: 6px;
+    /* ایجاد فضا برای اسکرول‌بار دست‌ساز */
+    flex: 1;
 }
 
 .leaderboard-row {
@@ -387,6 +406,8 @@ dialog.sketch-modal[open]::backdrop {
     border: 2px solid #2b2625;
     border-radius: 95px 10px 100px 12px / 12px 95px 10px 105px;
     transition: transform 0.2s ease;
+    flex-shrink: 0;
+    /* ردیف‌ها نباید فشرده شوند */
 }
 
 .leaderboard-row:hover {
@@ -420,7 +441,6 @@ dialog.sketch-modal[open]::backdrop {
     color: #7d7571;
 }
 
-/* استایل‌های برندگان تراز اول */
 .gold-rank {
     background-color: #fff9e6;
     border-color: #e6b041;
@@ -440,6 +460,24 @@ dialog.sketch-modal[open]::backdrop {
 .bronze-rank {
     background-color: #fef2f2;
     border-color: #ca8a04;
+}
+
+/* طراحی اختصاصی و دست‌ساز اسکرول‌بار لیدربرد */
+.leaderboard-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.leaderboard-list::-webkit-scrollbar-track {
+    background: #fbf8f3;
+    border-left: 2px dashed #2b2625;
+    /* خط‌چین ظریف مدادی برای مسیر اسکرول */
+}
+
+.leaderboard-list::-webkit-scrollbar-thumb {
+    background: #e6b041;
+    /* رنگ خردلی پالت شما */
+    border: 2px solid #2b2625;
+    border-radius: 10px;
 }
 
 /* ==========================================================================
@@ -696,5 +734,100 @@ dialog.sketch-modal[open]::backdrop {
 
     .card-icon {
         font-size: 1.8rem;
+    }
+}
+
+@media (max-height: 680px) {
+    dialog.sketch-modal {
+        padding: 15px 20px;
+    }
+
+    dialog.sketch-modal h2,
+    dialog.sketch-modal h1,
+    .page-title {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+    }
+
+    .sketch-divider {
+        margin: 10px auto;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .sketch-label {
+        font-size: 1.05rem;
+        margin-bottom: 4px;
+    }
+
+    .sketch-input {
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+
+    .grid-selector-group {
+        gap: 6px;
+    }
+
+    .grid-option .option-card {
+        padding: 8px 3px;
+        font-size: 1rem;
+    }
+
+    .sketch-btn {
+        padding: 8px 18px;
+        font-size: 1.1rem;
+        margin: 5px;
+    }
+
+    .block-btn {
+        padding: 10px 15px;
+        font-size: 1.2rem;
+    }
+
+    .about-content p {
+        font-size: 1.05rem;
+        margin-bottom: 8px;
+    }
+
+    .signature {
+        margin-top: 15px;
+    }
+}
+
+/* برای سناریوهای بسیار شدید یا حالت افقی گوشی (Landscape) */
+@media (max-height: 500px) {
+    dialog.sketch-modal {
+        padding: 10px 15px;
+    }
+
+    dialog.sketch-modal h2,
+    dialog.sketch-modal h1,
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .sketch-divider {
+        margin: 6px auto;
+        width: 95%;
+    }
+
+    .form-group {
+        margin-bottom: 6px;
+    }
+
+    .grid-selector-group {
+        grid-template-columns: repeat(4, 1fr) !important;
+        /* چیدمان ستونی عریض در حالت افقی */
+    }
+
+    .about-content p {
+        font-size: 0.95rem;
+    }
+
+    .signature {
+        margin-top: 8px;
     }
 }
