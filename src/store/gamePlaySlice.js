@@ -8,6 +8,7 @@ const initialGamePlay = {
     spentTime: 0,
     status: "playing",
     isPreviewing: false,
+    userWon: false,
 }
 
 
@@ -62,12 +63,18 @@ const gamePlaySlice = createSlice({
                 } else {
                     // برای اشتباه هم به نسبت سختی بازی، جریمه کمتری در جدول بزرگتر در نظر می‌گیریم
                     const penalty = 20 / multiplier;
+
                     if (state.score >= penalty) {
                         state.score -= penalty;
                     } else {
                         state.score = 0;
                     }
                 }
+            }
+            const hasUnmatchedCard = state.gameTable.some(card => !card.matched);
+
+            if (!hasUnmatchedCard) {
+                state.userWon = true;
             }
         },
         resetSelectedCards(state) {
@@ -80,6 +87,18 @@ const gamePlaySlice = createSlice({
                 if (c2) c2.flipped = false;
             }
             state.selectedCards = []; // خالی کردن آرایه برای نوبت بعدی
+        },
+        resetGame(state) {
+            state.gameTable = []
+            state.selectedCards = []
+            state.score = 0
+            state.spentTime = 0
+            state.status = "playing"
+            state.isPreviewing = false
+            state.userWon = false
+        },
+        increaseTime(state) {
+            state.spentTime = state.spentTime + 1;
         }
     }
 })

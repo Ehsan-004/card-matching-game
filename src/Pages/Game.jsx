@@ -7,11 +7,18 @@ import GameHeader from "../Components/GameHeader";
 import { useEffect, useRef } from "react";
 import Modal from "../Components/Modal";
 import { Link } from "react-router";
+import { formatTime } from "../utils/time";
 
 
 export default function Game() {
     const dialogRef = useRef();
-    const { gridSize } = useSelector(state => state.game);
+    const winRef = useRef();
+    const { username, gridSize } = useSelector(state => state.game);
+    const { userWon, score, gameTable, spentTime } = useSelector(state => state.gameplay);
+
+    const passedTimeFormatted = formatTime(spentTime);
+
+    const allCardsNum = gridSize * gridSize;
 
     const dispatch = useDispatch();
 
@@ -20,9 +27,22 @@ export default function Game() {
         dispatch(gameplayActions.initializeGame({ gameTable }))
     }, [EMOJIES, gridSize]);
 
+    useEffect(() => {
+        if (userWon) {
+            // به محض اینکه کاربر برد، مودال را باز کن
+            winRef.current?.open();
+        } else {
+            // اگر بازی ریست شد، مودال را ببند
+            winRef.current?.close();
+        }
+    }, [userWon]);
+
     function handleCLickExit() {
         dialogRef.current.open();
     }
+
+
+    console.log("[debug] `Game.jsx` - winning state: " + userWon)
 
 
     return (
@@ -33,7 +53,6 @@ export default function Game() {
 
                 <GameTable />
 
-                {/* <!-- ج) دکمه پایینی خروج از بازی --> */}
                 <div className="game-footer">
                     <button
                         onClick={handleCLickExit}
@@ -66,6 +85,53 @@ export default function Game() {
                     >
                         خیر، ادامه بازی
                     </button>
+                </div>
+            </Modal>
+
+            <Modal
+                ref={winRef}
+                id="victory-modal"
+                className="sketch-modal sketch-panel sketch-border"
+            >
+                <div className="victory-header">
+                    <span className="victory-emoji">🏆</span>
+                    <h2 className="victory-title">✨ هورااا! برنده شدی! ✨</h2>
+                </div>
+
+                <div className="sketch-divider"></div>
+
+                <p className="victory-subtext">حافظه فوق‌العاده‌ات باعث شد همه کارت‌ها رو مثل یک هنرمند واقعی جفت کنی! ✏️🎨</p>
+
+                <div className="sketch-stats-panel sketch-border">
+                    <div className="stats-grid">
+                        <div className="stat-item">
+                            <span className="stat-label">⏱️ زمان ثبت رکورد:</span>
+                            <span className="stat-value" id="victory-time">{passedTimeFormatted}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">✨ امتیاز نهایی:</span>
+                            <span className="stat-value" id="victory-score">{score}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">🧩 جفت‌ها:</span>
+                            <span className="stat-value" id="victory-pairs">{allCardsNum}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">📐 ابعاد زمین بازی:</span>
+                            <span className="stat-value" id="victory-grid">{gridSize} × {gridSize}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="sketch-divider"></div>
+
+                <div className="modal-buttons">
+                    <Link to="/" className="sketch-btn primary">
+                        🏠 منوی اصلی
+                    </Link>
+                    <Link to="/leaderboard" className="sketch-btn secondary">
+                        🏆 جدول امتیازات
+                    </Link>
                 </div>
             </Modal>
         </>

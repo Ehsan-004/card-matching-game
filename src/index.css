@@ -831,3 +831,152 @@ dialog.sketch-modal[open]::backdrop {
         margin-top: 8px;
     }
 }
+
+/* ==========================================================================
+   ۱۱. استایل‌های اختصاصی مودال پیروزی (Victory Modal)
+   ========================================================================== */
+.victory-header {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+/* افکت شناور برای تاج پیروزی */
+.victory-emoji {
+    font-size: 3.5rem;
+    display: inline-block;
+    animation: floatDoodle 2.5s ease-in-out infinite alternate;
+}
+
+.victory-title {
+    font-size: 2.2rem;
+    color: #d96a50;
+    /* رنگ نارنجی/سفالی گرم */
+    margin-top: 10px;
+}
+
+.victory-subtext {
+    font-size: 1.15rem;
+    color: #4a4341;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* پنل داخلی کارنامه فانتزی */
+.sketch-stats-panel {
+    background-color: #faf6f0;
+    /* پس‌زمینه کاهی ملایم */
+    padding: 15px 20px;
+    margin: 10px 0;
+    width: 100%;
+    border-width: 2px;
+    border-radius: 15px 95px 15px 95px / 95px 15px 95px 15px;
+    /* انحنای نامنظم */
+}
+
+/* چیدمان شبکه‌ای کارت‌های اطلاعات */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* ۲ ستون در کنار هم */
+    gap: 15px;
+    text-align: right;
+    direction: rtl;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: #7d7571;
+    font-weight: bold;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #2b2625;
+}
+
+/* انیمیشن شناور آرام تزیینی */
+@keyframes floatDoodle {
+    0% {
+        transform: translateY(0px) rotate(-3deg);
+    }
+
+    100% {
+        transform: translateY(-8px) rotate(3deg);
+    }
+}
+
+/* ==========================================================================
+   ۱۲. افزودن قوانین واکنش‌گرایی دیالوگ پیروزی به بخش مدیاکوئری‌ها
+   ========================================================================== */
+/* این قوانین را به داخل بلاک @media (max-height: 680px) که در گام قبلی ساختیم اضافه کنید: */
+@media (max-height: 680px) {
+    .victory-emoji {
+        font-size: 2.5rem;
+    }
+
+    .victory-title {
+        font-size: 1.8rem;
+        margin-top: 5px;
+    }
+
+    .victory-subtext {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .sketch-stats-panel {
+        padding: 10px 15px;
+        margin: 5px 0;
+    }
+
+    .stats-grid {
+        gap: 8px;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+    }
+
+    .stat-value {
+        font-size: 1.15rem;
+    }
+}
+
+/* این قوانین را به داخل بلاک @media (max-height: 500px) (حالت افقی موبایل) اضافه کنید: */
+@media (max-height: 500px) {
+    .victory-emoji {
+        display: none;
+        /* مخفی کردن اموجی بزرگ در ارتفاع خیلی کم جهت حفظ فضا */
+    }
+
+    .victory-title {
+        font-size: 1.4rem;
+        margin-top: 0;
+    }
+
+    .victory-subtext {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .sketch-stats-panel {
+        padding: 8px 12px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        /* تبدیل به یک ردیف ۴ ستونه برای بهینه‌سازی ارتفاع */
+        gap: 5px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+    }
+}

@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Modal from "../Components/Modal";
 import { Link, Navigate, useNavigate } from "react-router";
 import { gameActions } from "../store/gameSlice.js";
 import { useDispatch } from "react-redux";
+import { gameplayActions } from "../store/gamePlaySlice.js";
 
 
 export default function Home() {
@@ -26,8 +27,11 @@ export default function Home() {
             gridSize: "",
         });
 
+        gameplayActions.resetGame();
+
         game.current.open();
     }
+
 
     function handleSubmitGame(event) {
         event.preventDefault();
