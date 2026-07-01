@@ -22,18 +22,14 @@ export function createMemoryGrid(chars, gridSize) {
         throw new Error("کاراکتر کافی وجود ندارد");
     }
 
-    // انتخاب کاراکترها
     const selected = chars
         .sort(() => Math.random() - 0.5)
         .slice(0, pairsNeeded);
 
-    // ساخت جفت‌ها
     const paired = selected.flatMap(char => [char, char]);
 
-    // مخلوط کردن
     const shuffled = paired.sort(() => Math.random() - 0.5);
 
-    // ساخت آرایه آبجکت‌ها
     return shuffled.map((char, index) => ({
         id: index + 1,
         value: char,

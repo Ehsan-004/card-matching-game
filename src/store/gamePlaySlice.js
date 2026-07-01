@@ -18,17 +18,15 @@ const gamePlaySlice = createSlice({
     reducers: {
         initializeGame(state, action) {
             state.gameTable = action.payload.gameTable;
-            state.isPreviewing = true; // 👈 اول بازی نگاه اولیه فعال میشه
-            state.score = 0; // ریست کردن امتیاز
+            state.isPreviewing = true;
+            state.score = 0;
         },
-        // اکشن جدید برای تمام شدن زمان نگاه اولیه
         endPreview(state) {
             state.isPreviewing = false;
         },
         selectCard(state, action) {
             const { cardId, gridSize } = action.payload;
 
-            // 👈 شرط جدید: اگر در حال پیش‌نمایش بودیم، کاربر نتونه کلیک کنه
             if (state.isPreviewing) return;
 
             const card = state.gameTable.find(c => c.id === cardId);
@@ -41,6 +39,7 @@ const gamePlaySlice = createSlice({
 
             state.selectedCards.push(cardId);
 
+            // with help of Gemini
             if (state.selectedCards.length === 2) {
                 const [id1, id2] = state.selectedCards;
 
@@ -56,12 +55,10 @@ const gamePlaySlice = createSlice({
                     c1.matched = true;
                     c2.matched = true;
 
-                    // اعمال ضریب روی امتیاز مثبت
                     state.score += (100 * multiplier);
 
                     state.selectedCards = [];
                 } else {
-                    // برای اشتباه هم به نسبت سختی بازی، جریمه کمتری در جدول بزرگتر در نظر می‌گیریم
                     const penalty = 20 / multiplier;
 
                     if (state.score >= penalty) {
@@ -86,7 +83,7 @@ const gamePlaySlice = createSlice({
                 if (c1) c1.flipped = false;
                 if (c2) c2.flipped = false;
             }
-            state.selectedCards = []; // خالی کردن آرایه برای نوبت بعدی
+            state.selectedCards = []; 
         },
         resetGame(state) {
             state.gameTable = []

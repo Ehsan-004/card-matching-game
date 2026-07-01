@@ -14,7 +14,7 @@ export default function GameCard({ cardData }) {
         if (selectedCards.length === 2) {
             const timer = setTimeout(() => {
                 dispatch(gameplayActions.resetSelectedCards());
-            }, 1000); // ۱ ثانیه مکث برای دیدن کارت‌ها
+            }, 1000);
 
             return () => clearTimeout(timer);
         }

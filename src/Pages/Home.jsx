@@ -56,7 +56,6 @@ export default function Home() {
 
         setErrors(newErrors);
 
-        // اگر خطایی وجود داشت ادامه نده
         if (newErrors.username || newErrors.gridSize) {
             return;
         }

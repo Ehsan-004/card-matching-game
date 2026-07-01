@@ -12,7 +12,7 @@ export default function GameTable({ }) {
         if (isPreviewing) {
             const timer = setTimeout(() => {
                 dispatch(gameplayActions.endPreview());
-            }, 2500); // 👈 ۲.۵ ثانیه کارت‌ها رو به کاربر نشون میده (قابل تغییره)
+            }, 2500);
 
             return () => clearTimeout(timer);
         }

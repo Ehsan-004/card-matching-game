@@ -29,10 +29,8 @@ export default function Game() {
 
     useEffect(() => {
         if (userWon) {
-            // به محض اینکه کاربر برد، مودال را باز کن
             winRef.current?.open();
         } else {
-            // اگر بازی ریست شد، مودال را ببند
             winRef.current?.close();
         }
     }, [userWon]);
